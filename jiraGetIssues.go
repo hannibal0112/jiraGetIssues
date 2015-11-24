@@ -38,27 +38,27 @@ type JiraIssuesChangeLog struct {
 }
 
 type JiraFields struct {
-	Summary                       string                  `json:"summary"`
-	Progress                      interface{}             `json:"progress"`
-	IssueType                     JiraFieldsIssueType     `json:"issuetyep"`
-	Votes                         interface{}             `json:"votes"`
-	Resolution                    JiraFieldsResolution    `json:"resolution"`
-	FixVersion                    []JiraFieldsFixVersions `json:"fixVersions"`
-	ResoluationDate               string                  `json:"resolutiondate"`
-	TimeSpent                     string                  `json:"timespent"`
-	Reporter                      JiraFieldsReporter      `json:"reporter"`
-	AggregateTimeOriginalEstimate string                  `json:"aggregatetimeoriginalestimate"`
-	Updated                       string                  `json:"updated"`
-	Created                       string                  `json:"created"`
-	Description                   string                  `json:"description"`
-	Priority                      JiraFieldsPriority      `json:"priority"`
-	DueDate                       string                  `json:"duedate"`
-	Status                        JiraFieldsStatus        `json:"status"`
-	Labels                        []string                `json:"labels"`
-	Assignee                      JiraFieldsReporter      `json:"assignee"`
-	Project                       JiraFieldsProject       `json:"project"`
-	Version                       []JiraFieldsVersions    `json:"versions"`
-	Components                    []JiraFieldsResolution  `json:"components"`
+	Summary    string                  `json:"summary"`
+	Progress   interface{}             `json:"progress"`
+	IssueType  JiraFieldsIssueType     `json:"issuetyep"`
+	Votes      interface{}             `json:"votes"`
+	Resolution JiraFieldsResolution    `json:"resolution"`
+	FixVersion []JiraFieldsFixVersions `json:"fixVersions"`
+	//ResoluationDate string                  `json:"resolutiondate"`
+	//TimeSpent                     string                  `json:"timespent"`
+	Reporter                      JiraFieldsReporter     `json:"reporter"`
+	AggregateTimeOriginalEstimate int                    `json:"aggregatetimeoriginalestimate"`
+	Updated                       string                 `json:"updated"`
+	Created                       string                 `json:"created"`
+	Description                   string                 `json:"description"`
+	Priority                      JiraFieldsPriority     `json:"priority"`
+	DueDate                       string                 `json:"duedate"`
+	Status                        JiraFieldsStatus       `json:"status"`
+	Labels                        []string               `json:"labels"`
+	Assignee                      JiraFieldsReporter     `json:"assignee"`
+	Project                       JiraFieldsProject      `json:"project"`
+	Version                       []JiraFieldsVersions   `json:"versions"`
+	Components                    []JiraFieldsResolution `json:"components"`
 }
 
 type JiraFieldsVersions struct {
