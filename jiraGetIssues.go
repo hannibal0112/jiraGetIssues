@@ -238,9 +238,7 @@ func main() {
 				ChangeLogCreated := jiraChangeLog.ChangeLog.Histories[y].Created
 
 				fmt.Printf("   ==>  ID -> %s , Created -> %s  \n", ChangeLogID, ChangeLogCreated)
-
 			}
-
 		}
 	} else {
 		CommandName := strings.Split(os.Args[0], "/")
