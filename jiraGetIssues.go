@@ -40,7 +40,7 @@ type JiraIssuesChangeLog struct {
 type JiraFields struct {
 	Summary                       string                  `json:"summary"`
 	Progress                      interface{}             `json:"progress"`
-	IssueType                     JiraFieldsIssueType     `json:"issuetyep"`
+	IssueType                     JiraFieldsIssueType     `json:"issuetype"`
 	Votes                         interface{}             `json:"votes"`
 	Resolution                    JiraFieldsResolution    `json:"resolution"`
 	FixVersion                    []JiraFieldsFixVersions `json:"fixVersions"`
@@ -217,6 +217,7 @@ func main() {
 
 		for x := range jiraObject.Issues {
 			Key := jiraObject.Issues[x].Key
+			fmt.Println("Issue TYPE", jiraObject.Issues[x].Fields.IssueType.Name)
 			fmt.Println(Key)
 
 			changeLogCommand := fmt.Sprintf("%s/rest/api/2/issue/%s?expand=changelog", *jiraweb, Key)
