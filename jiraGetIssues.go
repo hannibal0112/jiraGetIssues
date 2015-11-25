@@ -45,7 +45,7 @@ type JiraFields struct {
 	Resolution                    JiraFieldsResolution    `json:"resolution"`
 	FixVersion                    []JiraFieldsFixVersions `json:"fixVersions"`
 	ResoluationDate               string                  `json:"resolutiondate"`
-	TimeSpent                     string                  `json:"timespent"`
+	TimeSpent                     int                     `json:"timespent"`
 	Reporter                      JiraFieldsReporter      `json:"reporter"`
 	AggregateTimeOriginalEstimate int                     `json:"aggregatetimeoriginalestimate"`
 	Updated                       string                  `json:"updated"`
