@@ -4,7 +4,8 @@
 * rd ==> RazorFlow Server by JavaScript 
 * restServer.go ==>  a simple rest server for testing 
   
-*rf/js/dashboard_app.js* Get data of chart from your REST server. 
+## rf/js/dashboard_app.js 
+Get data of chart from your REST server. 
 ``` javascript
 $.ajax({
     type: "GET",
@@ -23,8 +24,9 @@ $.ajax({
     }
 })
 ```
-*restServer.go* Easy REST server 
-*JSON Structure* 
+## restServer.go 
+Easy REST server 
+## JSON Structure 
 ```
 {
   "Categories":["One","Two","Three","Foru","Five","Six","Seven","Eight"],
