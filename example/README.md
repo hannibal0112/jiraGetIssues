@@ -27,23 +27,7 @@ $.ajax({
 *JSON Structure* 
 ```
 {
-  "Categories":[
-    "One",
-    "Two",
-    "Three",
-    "Foru",
-    "Five",
-    "Six",
-    "Seven",
-    "Eight"],
-  "Sales":[
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8]
+  "Categories":["One","Two","Three","Foru","Five","Six","Seven","Eight"],
+  "Sales":[1,2,3,4,5,6,7,8]
 }
 ```
