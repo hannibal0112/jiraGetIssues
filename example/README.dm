@@ -5,7 +5,7 @@ File Stucture
   restServer.go ==>  a simple rest server for testing 
   
 <rf/js/dashboard_app.js> 
-```javascript
+'''
 $.ajax({
     type: "GET",
     dataType: "json",
@@ -22,4 +22,4 @@ $.ajax({
         });
     }
 })
-```
+'''
