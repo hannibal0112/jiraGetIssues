@@ -1,8 +1,8 @@
-##Usage for this example 
+# Usage for this example 
 
-#File Stucture 
-  rd ==> RazorFlow Server by JavaScript 
-  restServer.go ==>  a simple rest server for testing 
+## File Stucture 
+* rd ==> RazorFlow Server by JavaScript 
+* restServer.go ==>  a simple rest server for testing 
   
 #<rf/js/dashboard_app.js> 
 
