@@ -6,7 +6,7 @@
   
 #<rf/js/dashboard_app.js> 
 
-```
+``` javascript
 $.ajax({
     type: "GET",
     dataType: "json",
