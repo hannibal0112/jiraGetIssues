@@ -1,8 +1,7 @@
 # Usage for this example 
 
 ## File Stucture 
-* rd ==> RazorFlow Server by JavaScript 
-  Guideline link https://razorflow.com/docs/dashboard/js/guide/index.php
+* rd ==> RazorFlow Server by JavaScript (link https://razorflow.com/docs/dashboard/js/guide/index.php)
 * restServer.go ==>  a simple rest server for testing 
   
 ## rf/js/dashboard_app.js 
