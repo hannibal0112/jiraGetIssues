@@ -1,11 +1,12 @@
-Usage for this example 
+##Usage for this example 
 
-File Stucture 
+#File Stucture 
   rd ==> RazorFlow Server by JavaScript 
   restServer.go ==>  a simple rest server for testing 
   
-<rf/js/dashboard_app.js> 
-'''
+#<rf/js/dashboard_app.js> 
+
+```
 $.ajax({
     type: "GET",
     dataType: "json",
@@ -22,4 +23,4 @@ $.ajax({
         });
     }
 })
-'''
+```
