@@ -1,59 +1,52 @@
-//StandaloneDashboard(function(db){
-//
-//	db.setDashboardTitle ("My Dashboard");
-//
-//	var chart = new ChartComponent();
-//	chart.setCaption("Sales");
-//	chart.setDimensions (6, 6);
-//	chart.setLabels (["2013", "2014", "2015"]);
-//	chart.addSeries ([3151, 1121, 4982]);
-//	db.addComponent (chart);
-//
-//	var chart2 = new ChartComponent();
-//	chart2.setCaption("Sales");
-//	chart2.setDimensions (6, 6);
-//	chart2.setLabels (["2013", "2014", "2015"]);
-//	chart2.addSeries ([3151, 1121, 4982], {
-//		numberPrefix: "$",
-//		seriesDisplayType: "line"
-//	});
-//	db.addComponent (chart2);
-//});
-//
+StandaloneDashboard(function (tdb) {
+    tdb.setTabbedDashboardTitle("Tabbed Dashboard");
 
-$.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "http://10.116.136.13:8003/line",
-    success: function (data) {
-        rf.StandaloneDashboard(function (db) {
-        var sales_chart = new ChartComponent();
-        sales_chart.setCaption("Sales Chart");
-        db.addComponent(sales_chart);
+    // Dashboard 1
+    var db1 = new Dashboard();
+    db1.setDashboardTitle('Table In Razorfow');
 
-        sales_chart.setLabels (data['Categories']);
-        sales_chart.addSeries ("Sales", "sales", data['Sales']);
+    var sales_chart = new ChartComponent();
+    sales_chart.setCaption("Sales Chart");
 
-        });
-    }
-})
+    sales_chart.lock();
+    db1.addComponent(sales_chart);
+    $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "http://10.116.136.13:8003/line/TYGH",
+        success: function (data) {
+            sales_chart.setLabels (data['Categories']);
+            sales_chart.addSeries ("Sales", "sales", data['Sales']);
+            sales_chart.unlock();
+        }
+    });
 
+    // Dashboard 2
+    var db2 = new Dashboard('db2');
+    db2.setDashboardTitle('KPI Types Supported in RazorFlow');
 
-//
-//rf.StandaloneDashboard(function(db){
-//    var sales_chart = new ChartComponent();
-//    sales_chart.setCaption ("Sales for 2014");
-//    sales_chart.lock ();
-//    db.addComponent(sales_chart);
-//
-//    $.get("http://localhost:8003/line", function (data) {
-//        // This function is executed when the ajax request is successful.
-//
-//        sales_chart.setLabels (data['Categories']); // You can also use data.categories
-//        sales_chart.addSeries ("Sales", "sales", data['Sales']);
-//
-//        // Don't forget to call unlock or the data won't be displayed
-//        sales_chart.unlock ();
-//    });
-//});
-//
+    var c2 = new KPIComponent();
+    c2.setDimensions(4, 2);
+    c2.setCaption('Average Monthly Sales');
+    c2.setValue(513.22, {
+        numberPrefix: '$'
+    });
+    db2.addComponent(c2);
+
+    var c3 = new KPIComponent();
+    c3.setDimensions(4, 2);
+    c3.setCaption('Average Monthly Units');
+    c3.setValue(22);
+    c3.setSparkValues(['Jan', "Feb", 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                      [12.31, 10.34, 10.26, 9, 8.21, 13.41, 14.43, 23.31, 13.41, 11.4, 28.34, 29.21]);
+    db2.addComponent(c3);
+
+    tdb.addDashboardTab(db1, {
+        title: 'First Dashboard'
+    });
+    tdb.addDashboardTab(db2, {
+        title: 'Second Dashboard',
+        active: true
+    });
+
+}, {tabbed: true});
