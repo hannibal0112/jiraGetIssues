@@ -9,16 +9,20 @@ import (
 type LineChart struct {
 	Categories []string
 	Sales      []int
+	RD         []int
 }
 
 func lineHandler(w http.ResponseWriter, req *http.Request) {
 
+	getProject := req.URL.Path[len("/line/"):]
+	fmt.Println(getProject)
 	switch req.Method {
 	case "GET":
 
 		line := LineChart{
 			Sales:      []int{1, 2, 3, 4, 5, 6, 7, 8},
 			Categories: []string{"One", "Two", "Three", "Foru", "Five", "Six", "Seven", "Eight"},
+			RD:         []int{5, 6, 7, 8, 1, 2, 3, 4},
 		}
 
 		buf, err := json.Marshal(line)
@@ -38,7 +42,7 @@ func lineHandler(w http.ResponseWriter, req *http.Request) {
 func main() {
 
 	fmt.Println("Start Server :8003/line ")
-	http.HandleFunc("/line", lineHandler)
+	http.HandleFunc("/line/", lineHandler)
 	http.ListenAndServe(":8003", nil)
 
 }
