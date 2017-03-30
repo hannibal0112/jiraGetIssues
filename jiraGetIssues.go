@@ -161,7 +161,7 @@ type JiraIssuesChangeLogDataHistoriesItems struct {
 	ToString   string `json:"toString"`
 }
 
-type ErrorMessageObject struct {
+type objectErrorMessage struct {
 	ErrorMessages []string    `json:"errorMessages"`
 	Errors        interface{} `json:"errors"`
 }
@@ -193,7 +193,7 @@ func main() {
 		if resp.Body != nil {
 			bodyBytes, _ = ioutil.ReadAll(resp.Body)
 		}
-		resp_Error := ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+		respError := ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 		resp.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 
 		var jiraObject JiraObject
@@ -204,8 +204,8 @@ func main() {
 
 		// If value of Total it seems Project name is error.
 		if jiraObject.Total == 0 {
-			var errorMessageObject ErrorMessageObject
-			json.NewDecoder(resp_Error).Decode(&errorMessageObject)
+			var errorMessageObject objectErrorMessage
+			json.NewDecoder(respError).Decode(&errorMessageObject)
 			for x := range errorMessageObject.ErrorMessages {
 				fmt.Println(errorMessageObject.ErrorMessages[x])
 			}
