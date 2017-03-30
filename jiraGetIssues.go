@@ -168,7 +168,7 @@ type objectErrorMessage struct {
 
 func main() {
 
-	jiraweb := flag.String("jiraweb", "", "Jira Web Site Address, example : -jiraweb=http://jira.sw.studio.htc.com")
+	jiraweb := flag.String("jiraweb", "", "Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira")
 	projectname := flag.String("projectname", "", "Project Name, example : -projectname=TYGH")
 	username := flag.String("username", "", "User Name")
 	password := flag.String("password", "", "Password")
