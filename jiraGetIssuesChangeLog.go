@@ -12,7 +12,8 @@ import (
 	"strings"
 )
 
-type JiraObject struct {
+// JiraObject is the first layer of jql search
+type JiraObject struct { //xxxx
 	Expend     string       `json:"expend"`
 	StartAt    int          `json:"startAt"`
 	MaxResults int          `json:"maxResults"`
@@ -20,6 +21,7 @@ type JiraObject struct {
 	Issues     []JiraIssues `json:"issues"`
 }
 
+// JiraIssues is for JiraObject Issues
 type JiraIssues struct {
 	Expend string     `json:"expend"`
 	ID     string     `json:"id"`
@@ -28,6 +30,7 @@ type JiraIssues struct {
 	Fields JiraFields `json:"fields"`
 }
 
+// JiraIssuesChangeLog is the feedback json of specific jira ticket
 type JiraIssuesChangeLog struct {
 	Expend    string                  `json:"expend"`
 	ID        string                  `json:"id"`
@@ -37,6 +40,7 @@ type JiraIssuesChangeLog struct {
 	ChangeLog JiraIssuesChangeLogData `json:"changelog"`
 }
 
+// JiraFields is the field structure for JIRA issues
 type JiraFields struct {
 	Summary                       string                  `json:"summary"`
 	Progress                      interface{}             `json:"progress"`
@@ -61,6 +65,7 @@ type JiraFields struct {
 	Components                    []JiraFieldsResolution  `json:"components"`
 }
 
+// JiraFieldsVersions is the fields of jira versions
 type JiraFieldsVersions struct {
 	Self        string `json:"self"`
 	ID          string `json:"id"`
@@ -70,6 +75,7 @@ type JiraFieldsVersions struct {
 	ReleaseDate string `json:"releaseDate"`
 }
 
+// JiraFieldsProject is the filds of Jira Project
 type JiraFieldsProject struct {
 	Self         string      `json:"self"`
 	ID           string      `json:"id"`
@@ -79,6 +85,7 @@ type JiraFieldsProject struct {
 	AvatarUrls   interface{} `json:"avatarUrls"`
 }
 
+// JiraFieldsStatus is the fiedls of Jira Status
 type JiraFieldsStatus struct {
 	Self        string `json:"self"`
 	Description string `json:"description"`
@@ -94,6 +101,7 @@ type JiraFieldsPriority struct {
 	ID      string `json:"id"`
 }
 
+//JiraFieldsReporter is the fields of Jira Reporter
 type JiraFieldsReporter struct {
 	Self         string      `json:"self"`
 	Name         string      `json:"name"`
@@ -103,6 +111,7 @@ type JiraFieldsReporter struct {
 	Active       bool        `json:"active"`
 }
 
+// JiraFieldsResolution is the fields of Jira Resolution
 type JiraFieldsResolution struct {
 	Self        string `json:"self"`
 	ID          string `json:"id"`
@@ -110,15 +119,17 @@ type JiraFieldsResolution struct {
 	Name        string `json:"name"`
 }
 
+// JiraFieldsIssueType is the fields of Issue Type
 type JiraFieldsIssueType struct {
 	Self        string `json:"self"`
 	ID          string `json:"id"`
 	Description string `json:"description"`
-	iconUrl     string `json:"iconUrl"`
+	IconURL     string `json:"iconUrl"`
 	Name        string `json:"name"`
 	SubTask     bool   `json:"subtask"`
 }
 
+// JiraFieldsFixVersions is the fields of Fix Versions
 type JiraFieldsFixVersions struct {
 	Self           string `json:"self"`
 	ID             string `json:"id"`
@@ -129,6 +140,7 @@ type JiraFieldsFixVersions struct {
 	TimeSpent      string `json:"timespent"`
 }
 
+// JiraIssuesChangeLogData is the fiedls of change log data
 type JiraIssuesChangeLogData struct {
 	StartAt    int                                `json:"startAt"`
 	MaxResults int                                `json:"maxResult"`
@@ -136,6 +148,7 @@ type JiraIssuesChangeLogData struct {
 	Histories  []JiraIssuesChangeLogDataHistories `json:"histories"`
 }
 
+// JiraIssuesChangeLogDataHistories is the fields of data history
 type JiraIssuesChangeLogDataHistories struct {
 	ID      string                                  `json:"id"`
 	Author  JiraIssuesChangeLogDataHistoriesAuthor  `json:"author"`
@@ -143,6 +156,7 @@ type JiraIssuesChangeLogDataHistories struct {
 	Items   []JiraIssuesChangeLogDataHistoriesItems `json:"items"`
 }
 
+// JiraIssuesChangeLogDataHistoriesAuthor is the fields of Author
 type JiraIssuesChangeLogDataHistoriesAuthor struct {
 	Self         string      `json:"self"`
 	Name         string      `json:"name"`
@@ -152,6 +166,7 @@ type JiraIssuesChangeLogDataHistoriesAuthor struct {
 	Active       bool        `json:"active"`
 }
 
+// JiraIssuesChangeLogDataHistoriesItems is the fields of Items
 type JiraIssuesChangeLogDataHistoriesItems struct {
 	Field      string `json:"field"`
 	FieldType  string `json:"fieldtype"`
