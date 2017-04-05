@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-type JiraObject struct {
+type JiraObject struct { //xxxx
 	Expend     string       `json:"expend"`
 	StartAt    int          `json:"startAt"`
 	MaxResults int          `json:"maxResults"`
