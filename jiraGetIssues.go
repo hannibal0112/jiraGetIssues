@@ -94,6 +94,7 @@ type JiraFieldsStatus struct {
 	ID          string `json:"id"`
 }
 
+// JiraFieldsPriority is the fields of priority
 type JiraFieldsPriority struct {
 	Self    string `json:"self"`
 	IconURL string `json:"iconUrl"`
