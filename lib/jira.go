@@ -180,7 +180,7 @@ type ObjectErrorMessage struct {
 	Errors        interface{} `json:"errors"`
 }
 
-// this feature can get labes merge strings
+// GetLabels can get labes merge strings
 func GetLabels(d []string) string {
 	name := ""
 	for z := range d {
@@ -192,7 +192,7 @@ func GetLabels(d []string) string {
 	return name[1:len(name)]
 }
 
-// this feature can get fix versions merge strings
+// GetFixVersions can get fix versions merge strings
 func GetFixVersions(d []JiraFieldsFixVersions) string {
 	name := ""
 	for z := range d {
@@ -204,7 +204,7 @@ func GetFixVersions(d []JiraFieldsFixVersions) string {
 	return name[1:len(name)]
 }
 
-// this feature can get versions merge strings
+// GetVersions can get versions merge strings
 func GetVersions(d []JiraFieldsVersions) string {
 	name := ""
 	for z := range d {
@@ -216,7 +216,7 @@ func GetVersions(d []JiraFieldsVersions) string {
 	return name[1:len(name)]
 }
 
-// this feature can get component merge strings
+// GetComponents can get component merge strings
 func GetComponents(d []JiraFieldsResolution) string {
 	name := ""
 	for z := range d {
@@ -228,12 +228,13 @@ func GetComponents(d []JiraFieldsResolution) string {
 	return name[1:len(name)]
 }
 
+// GetReturnJSON is the function that can get http/https return json file
 func GetReturnJSON(webaddress string, username string, password string, startcount int, totalcount int) JiraObject {
 
 	client := &http.Client{}
 
 	// Number is from 0 maximum is 1000 at one times.
-	getProjectIssueList := fmt.Sprintf("%s/rest/api/2/search?jql=project+in+(+GMM+,+TES+)+order+by+id&startAt=%d&maxResults=%d", webaddress, startcount, totalcount)
+	getProjectIssueList := fmt.Sprintf("%s/rest/api/2/search?jql=project+in+(+GMM+,+TES+,+DQ+,+LBOT+,+SUR+)+order+by+id&startAt=%d&maxResults=%d", webaddress, startcount, totalcount)
 	req, err := http.NewRequest("GET", getProjectIssueList, nil)
 	req.SetBasicAuth(username, password)
 	req.Header.Add("Content-Type", "application/json")

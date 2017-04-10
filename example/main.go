@@ -18,7 +18,6 @@ func main() {
 
 	if flag.NFlag() == 3 {
 
-		// func getReturnJSON( webaddress string, username string, password string, startcount int, totalcount int) jira.JiraObject {
 		jiraObject := jira.GetReturnJSON(*jiraweb, *username, *password, 0, 1)
 
 		fmt.Println("Total : ", jiraObject.Total)
@@ -30,21 +29,47 @@ func main() {
 
 		for i := 0; i < rangeCount; i++ {
 			startCount := 1000 * i
-			totalCount := 1
+			totalCount := 1000
 			fmt.Println("Strat Count --> ", startCount)
 
-			// func getReturnJSON( webaddress string, username string, password string, startcount int, totalcount int) jira.JiraObject {
 			jiraObject = jira.GetReturnJSON(*jiraweb, *username, *password, startCount, totalCount)
 
 			for x := range jiraObject.Issues {
-				Key := jiraObject.Issues[x].Key
+				issuekey := jiraObject.Issues[x].Key
+				issuetype := jiraObject.Issues[x].Fields.IssueType.Name
+				issueid := jiraObject.Issues[x].ID
+				issueself := jiraObject.Issues[x].Self
+				project := jiraObject.Issues[x].Fields.Project.Name
+				summary := jiraObject.Issues[x].Fields.Summary
+				priority := jiraObject.Issues[x].Fields.Priority.Name
+				resolution := jiraObject.Issues[x].Fields.Resolution.Name
+				status := jiraObject.Issues[x].Fields.Status.Name
+				lastchange := jiraObject.Issues[x].Fields.Updated
+				reporter := jiraObject.Issues[x].Fields.Reporter.Name
+				assignee := jiraObject.Issues[x].Fields.Assignee.Name
+				label := jira.GetLabels(jiraObject.Issues[x].Fields.Labels)
+				fixversion := jira.GetFixVersions(jiraObject.Issues[x].Fields.FixVersion)
+				component := jira.GetComponents(jiraObject.Issues[x].Fields.Components)
+				affectversion := jira.GetVersions(jiraObject.Issues[x].Fields.Versions)
 
-				fmt.Println("Key:", Key, "Issue TYPE:", jiraObject.Issues[x].Fields.IssueType.Name)
+				fmt.Println("=============================================================")
+				fmt.Println("Issue Key : ", issuekey)
+				fmt.Println("Issue Type : ", issuetype)
+				fmt.Println("Issue ID : ", issueid)
+				fmt.Println("Issue Self : ", issueself)
+				fmt.Println("Project : ", project)
+				fmt.Println("Summary : ", summary)
+				fmt.Println("Priority : ", priority)
+				fmt.Println("Resolution : ", resolution)
+				fmt.Println("Status : ", status)
+				fmt.Println("LastChange : ", lastchange)
+				fmt.Println("Reporter : ", reporter)
+				fmt.Println("Assignee : ", assignee)
+				fmt.Println("Label : ", label)
+				fmt.Println("Fix Version : ", fixversion)
+				fmt.Println("Component : ", component)
+				fmt.Println("Affect Version : ", affectversion)
 
-				componentMerged := jira.GetComponents(jiraObject.Issues[x].Fields.Components)
-				labelsMerged := jira.GetLabels(jiraObject.Issues[x].Fields.Labels)
-
-				fmt.Println("Components -->", componentMerged, "Labels -->", labelsMerged)
 			}
 		}
 	} else {
