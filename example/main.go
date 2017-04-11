@@ -52,6 +52,8 @@ func main() {
 				fixversion := jira.GetFixVersions(jiraObject.Issues[x].Fields.FixVersion)
 				component := jira.GetComponents(jiraObject.Issues[x].Fields.Components)
 				affectversion := jira.GetVersions(jiraObject.Issues[x].Fields.Versions)
+				startdate := jiraObject.Issues[x].Fields.StartDate
+				duedate := jiraObject.Issues[x].Fields.DueDate
 
 				fmt.Println("=============================================================")
 				fmt.Println("Issue Key : ", issuekey)
@@ -70,6 +72,8 @@ func main() {
 				fmt.Println("Fix Version : ", fixversion)
 				fmt.Println("Component : ", component)
 				fmt.Println("Affect Version : ", affectversion)
+				fmt.Println("Start Date : ", startdate)
+				fmt.Println("DueDate : ", duedate)
 
 			}
 		}

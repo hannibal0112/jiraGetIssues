@@ -60,6 +60,7 @@ type JiraFields struct {
 	Project                       JiraFieldsProject       `json:"project"`
 	Versions                      []JiraFieldsVersions    `json:"versions"`
 	Components                    []JiraFieldsResolution  `json:"components"`
+	StartDate                     string                  `json:"customfield_10700"`
 }
 
 // JiraFieldsVersions is the fields of jira versions
