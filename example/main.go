@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	dbServer   = ""
-	dbUserName = ""
-	dbPassword = ""
-	dbName     = ""
-	dbTable    = ""
+	dbServer    = ""
+	dbUserName  = ""
+	dbPassword  = ""
+	dbDBName    = ""
+	dbTableName = ""
 )
 
 // InjectData is the struct for Inject DB Data
@@ -53,10 +53,12 @@ func UpdateJiraDB(data InjectData) error {
 }
 
 func main() {
-	jiraweb := flag.String("jiraweb", "", "Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira")
+	jiraweb := flag.String("jiraweb", "",
+		"Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira")
 	username := flag.String("username", "", "User Name")
 	password := flag.String("password", "", "Password")
-	queryproject := flag.String("projects", "", "Input your projects to query, example : +Project1+,+Project2,+Project3")
+	queryproject := flag.String("projects", "",
+		"Input your projects to query, example : +Project1+,+Project2,+Project3")
 
 	flag.Parse()
 
