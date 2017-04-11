@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -8,6 +9,48 @@ import (
 
 	"github.com/luyaotsung/jiraGetIssues/lib"
 )
+
+const (
+	dbServer   = ""
+	dbUserName = ""
+	dbPassword = ""
+	dbName     = ""
+	dbTable    = ""
+)
+
+// InjectData is the struct for Inject DB Data
+type InjectData struct {
+	issuekey      string
+	issuetype     string
+	issueid       string
+	issueself     string
+	project       string
+	summary       string
+	priority      string
+	resolution    string
+	status        string
+	lastchange    string
+	reporter      string
+	assignee      string
+	label         string
+	fixversion    string
+	component     string
+	affectversion string
+	startdate     string
+	duedate       string
+}
+
+// CheckNewRecord feature is the feature that will check we need add or update record.  true : pleae add new record , false : please update old record
+func CheckNewRecord(data InjectData) bool {
+	return true
+}
+
+// UpdateJiraDB is a feature that can add/modify content of one jira ticket.
+func UpdateJiraDB(data InjectData) error {
+	fmt.Println("This is a UpdateJiraDB Fucntion")
+
+	return errors.New("xxxx")
+}
 
 func main() {
 	jiraweb := flag.String("jiraweb", "", "Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira")
@@ -36,6 +79,17 @@ func main() {
 			jiraObject = jira.GetReturnJSON(*jiraweb, *username, *password, *queryproject, startCount, totalCount)
 
 			for x := range jiraObject.Issues {
+
+				prepareData := InjectData{
+					issuekey: jiraObject.Issues[x].Key,
+				}
+
+				err := UpdateJiraDB(prepareData)
+				if err != nil {
+					fmt.Println("Error")
+
+				}
+
 				issuekey := jiraObject.Issues[x].Key
 				issuetype := jiraObject.Issues[x].Fields.IssueType.Name
 				issueid := jiraObject.Issues[x].ID
