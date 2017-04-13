@@ -1,21 +1,23 @@
 package main
 
 import (
+	"database/sql"
 	"errors"
 	"flag"
 	"fmt"
 	"os"
 	"strings"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/luyaotsung/jiraGetIssues/lib"
 )
 
 const (
-	dbServer    = ""
-	dbUserName  = ""
-	dbPassword  = ""
-	dbDBName    = ""
-	dbTableName = ""
+	dbServer    = "localhost:3306"
+	dbUserName  = "eli"
+	dbPassword  = "eli"
+	dbDBName    = "JiraData"
+	dbTableName = "Tickets"
 )
 
 // InjectData is the struct for Inject DB Data
@@ -40,14 +42,63 @@ type InjectData struct {
 	duedate       string
 }
 
-// CheckNewRecord feature is the feature that will check we need add or update record.  true : pleae add new record , false : please update old record
-func CheckNewRecord(data InjectData) bool {
-	return true
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
 // UpdateJiraDB is a feature that can add/modify content of one jira ticket.
 func UpdateJiraDB(data InjectData) error {
 	fmt.Println("This is a UpdateJiraDB Fucntion")
+
+	mySQLInfo := dbUserName + ":" + dbPassword + "@tcp(" + dbServer + "/" + dbDBName
+	db, err := sql.Open("mysql", mySQLInfo)
+	checkErr(err)
+
+	stmt, err := db.Prepare("INSERT " + dbTableName + " SET " +
+		"issuekey=?," +
+		"issueytpe=?," +
+		"issueid=?," +
+		"issueself=?," +
+		"project=?," +
+		"summary=?," +
+		"priority=?," +
+		"resolution=?," +
+		"status=?," +
+		"lastchange=?," +
+		"reporter=?," +
+		"assignee=?," +
+		"labels=?," +
+		"fixversions=?," +
+		"component=?," +
+		"affectversions=?")
+	checkErr(err)
+
+	res, err := stmt.Exec(data.issuekey,
+		data.issuetype,
+		data.issueid,
+		data.issueself,
+		data.project,
+		data.summary,
+		data.priority,
+		data.resolution,
+		data.status,
+		data.lastchange,
+		data.reporter,
+		data.assignee,
+		data.label,
+		data.fixversion,
+		data.component,
+		data.affectversion)
+	checkErr(err)
+
+	id, err := res.LastInsertId()
+	checkErr(err)
+
+	fmt.Println("Last Insert ID : ", id)
+
+	db.Close()
 
 	return errors.New("xxxx")
 }
