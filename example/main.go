@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	dbServer    = "localhost:3306"
+	dbServer    = "127.0.0.1:3306"
 	dbUserName  = "eli"
 	dbPassword  = "eli"
 	dbDBName    = "JiraData"
@@ -52,13 +52,14 @@ func checkErr(err error) {
 func UpdateJiraDB(data InjectData) error {
 	fmt.Println("This is a UpdateJiraDB Fucntion")
 
-	mySQLInfo := dbUserName + ":" + dbPassword + "@tcp(" + dbServer + "/" + dbDBName
+	mySQLInfo := dbUserName + ":" + dbPassword + "@tcp(" + dbServer + ")/" + dbDBName
+	fmt.Println("MySQL Server Information :", mySQLInfo)
 	db, err := sql.Open("mysql", mySQLInfo)
 	checkErr(err)
 
 	stmt, err := db.Prepare("INSERT " + dbTableName + " SET " +
 		"issuekey=?," +
-		"issueytpe=?," +
+		"issuetype=?," +
 		"issueid=?," +
 		"issueself=?," +
 		"project=?," +
@@ -134,7 +135,24 @@ func main() {
 			for x := range jiraObject.Issues {
 
 				prepareData := InjectData{
-					issuekey: jiraObject.Issues[x].Key,
+					issuekey:      jiraObject.Issues[x].Key,
+					issuetype:     jiraObject.Issues[x].Fields.IssueType.Name,
+					issueid:       jiraObject.Issues[x].ID,
+					issueself:     jiraObject.Issues[x].Self,
+					project:       jiraObject.Issues[x].Fields.Project.Name,
+					summary:       jiraObject.Issues[x].Fields.Summary,
+					priority:      jiraObject.Issues[x].Fields.Priority.Name,
+					resolution:    jiraObject.Issues[x].Fields.Resolution.Name,
+					status:        jiraObject.Issues[x].Fields.Status.Name,
+					lastchange:    jiraObject.Issues[x].Fields.Updated,
+					reporter:      jiraObject.Issues[x].Fields.Reporter.Name,
+					assignee:      jiraObject.Issues[x].Fields.Assignee.Name,
+					label:         jira.GetLabels(jiraObject.Issues[x].Fields.Labels),
+					fixversion:    jira.GetFixVersions(jiraObject.Issues[x].Fields.FixVersion),
+					component:     jira.GetComponents(jiraObject.Issues[x].Fields.Components),
+					affectversion: jira.GetVersions(jiraObject.Issues[x].Fields.Versions),
+					startdate:     jiraObject.Issues[x].Fields.StartDate,
+					duedate:       jiraObject.Issues[x].Fields.DueDate,
 				}
 
 				err := UpdateJiraDB(prepareData)
