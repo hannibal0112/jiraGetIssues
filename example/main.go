@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"flag"
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/luyaotsung/jiraGetIssues/lib"
@@ -48,60 +48,130 @@ func checkErr(err error) {
 	}
 }
 
-// UpdateJiraDB is a feature that can add/modify content of one jira ticket.
-func UpdateJiraDB(data InjectData) error {
-	fmt.Println("This is a UpdateJiraDB Fucntion")
-
-	mySQLInfo := dbUserName + ":" + dbPassword + "@tcp(" + dbServer + ")/" + dbDBName
-	fmt.Println("MySQL Server Information :", mySQLInfo)
+// ConfirmMethod is the feature that will confirm sql method is UPDATE or INSERT then return the method.
+func ConfirmMethod(TableName string, IssueKey string, LastChange string, mySQLInfo string) (Method string, SQLExtralCMD string) {
 	db, err := sql.Open("mysql", mySQLInfo)
 	checkErr(err)
 
-	stmt, err := db.Prepare("INSERT " + dbTableName + " SET " +
-		"issuekey=?," +
-		"issuetype=?," +
-		"issueid=?," +
-		"issueself=?," +
-		"project=?," +
-		"summary=?," +
-		"priority=?," +
-		"resolution=?," +
-		"status=?," +
-		"lastchange=?," +
-		"reporter=?," +
-		"assignee=?," +
-		"labels=?," +
-		"fixversions=?," +
-		"component=?," +
-		"affectversions=?")
+	var issuekey string
+	var lastchange string
+	row := db.QueryRow("SELECT issuekey, lastchange FROM "+TableName+"  WHERE issuekey = ?", IssueKey)
 	checkErr(err)
-
-	res, err := stmt.Exec(data.issuekey,
-		data.issuetype,
-		data.issueid,
-		data.issueself,
-		data.project,
-		data.summary,
-		data.priority,
-		data.resolution,
-		data.status,
-		data.lastchange,
-		data.reporter,
-		data.assignee,
-		data.label,
-		data.fixversion,
-		data.component,
-		data.affectversion)
-	checkErr(err)
-
-	id, err := res.LastInsertId()
-	checkErr(err)
-
-	fmt.Println("Last Insert ID : ", id)
-
+	err = row.Scan(&issuekey, &lastchange)
 	db.Close()
 
-	return errors.New("xxxx")
+	if err == nil {
+		fmt.Println(" ------ UPDATE ------ ")
+
+		layout := " 2017-04-14 02:50:33"
+		originalTime, _ := time.Parse(layout, lastchange)
+		latestTime, _ := time.Parse(layout, LastChange)
+
+		if originalTime.Unix() == latestTime.Unix() {
+			fmt.Println("    Same Data    ")
+			return "NONE", ""
+		}
+		return "UPDATE", " WHERE issuekey=?"
+	}
+	fmt.Println(" ------ INSERT ------ ")
+	return "INSERT", ""
+}
+
+// UpdateJiraDB is a feature that can add/modify content of one jira ticket.
+func UpdateJiraDB(data InjectData) {
+	mySQLInfo := dbUserName + ":" + dbPassword + "@tcp(" + dbServer + ")/" + dbDBName
+	fmt.Println("MySQL Server Information :", mySQLInfo)
+
+	sqlMethod, sqlExtralCMD := ConfirmMethod(dbTableName, data.issuekey, data.lastchange, mySQLInfo)
+
+	db, err := sql.Open("mysql", mySQLInfo)
+	checkErr(err)
+
+	switch method := sqlMethod; method {
+	case "UPDATE":
+		stmt, err := db.Prepare(sqlMethod + " " + dbTableName + " SET " +
+			"issuekey=?," +
+			"issuetype=?," +
+			"issueid=?," +
+			"issueself=?," +
+			"project=?," +
+			"summary=?," +
+			"priority=?," +
+			"resolution=?," +
+			"status=?," +
+			"lastchange=?," +
+			"reporter=?," +
+			"assignee=?," +
+			"labels=?," +
+			"fixversions=?," +
+			"component=?," +
+			"affectversions=?" +
+			sqlExtralCMD)
+		checkErr(err)
+		_, err = stmt.Exec(data.issuekey,
+			data.issuetype,
+			data.issueid,
+			data.issueself,
+			data.project,
+			data.summary,
+			data.priority,
+			data.resolution,
+			data.status,
+			data.lastchange,
+			data.reporter,
+			data.assignee,
+			data.label,
+			data.fixversion,
+			data.component,
+			data.affectversion,
+			data.issuekey)
+		checkErr(err)
+
+	case "INSERT":
+		stmt, err := db.Prepare(sqlMethod + " " + dbTableName + " SET " +
+			"issuekey=?," +
+			"issuetype=?," +
+			"issueid=?," +
+			"issueself=?," +
+			"project=?," +
+			"summary=?," +
+			"priority=?," +
+			"resolution=?," +
+			"status=?," +
+			"lastchange=?," +
+			"reporter=?," +
+			"assignee=?," +
+			"labels=?," +
+			"fixversions=?," +
+			"component=?," +
+			"affectversions=?" +
+			sqlExtralCMD)
+		checkErr(err)
+		res, err := stmt.Exec(data.issuekey,
+			data.issuetype,
+			data.issueid,
+			data.issueself,
+			data.project,
+			data.summary,
+			data.priority,
+			data.resolution,
+			data.status,
+			data.lastchange,
+			data.reporter,
+			data.assignee,
+			data.label,
+			data.fixversion,
+			data.component,
+			data.affectversion)
+		checkErr(err)
+		id, err := res.LastInsertId()
+		checkErr(err)
+		fmt.Println("Last Insert ID : ", id)
+
+	default:
+		fmt.Println("Method ===> ", method)
+	}
+	db.Close()
 }
 
 func main() {
@@ -155,11 +225,7 @@ func main() {
 					duedate:       jiraObject.Issues[x].Fields.DueDate,
 				}
 
-				err := UpdateJiraDB(prepareData)
-				if err != nil {
-					fmt.Println("Error")
-
-				}
+				UpdateJiraDB(prepareData)
 
 				issuekey := jiraObject.Issues[x].Key
 				issuetype := jiraObject.Issues[x].Fields.IssueType.Name
