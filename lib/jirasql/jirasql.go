@@ -47,26 +47,23 @@ func ConfirmMethod(TableName string, IssueKey string, LastChange string, mySQLIn
 	db.Close()
 
 	if err == nil {
-		fmt.Println(" ------ UPDATE ------ ")
-
 		layout := " 2017-04-14 02:50:33"
 		originalTime, _ := time.Parse(layout, lastchange)
 		latestTime, _ := time.Parse(layout, LastChange)
 
 		if originalTime.Unix() == latestTime.Unix() {
-			fmt.Println("    Same Data    ")
+			fmt.Printf("MySQL Method is %s for %s \n", "NONE", IssueKey)
 			return "NONE", ""
 		}
+		fmt.Printf("MySQL Method is %s for %s \n", "UPDATE", IssueKey)
 		return "UPDATE", " WHERE issuekey=?"
 	}
-	fmt.Println(" ------ INSERT ------ ")
+	fmt.Printf("MySQL Method is %s for %s \n", "INSERT", IssueKey)
 	return "INSERT", ""
 }
 
 // UpdateJiraDB is a feature that can add/modify content of one jira ticket.
 func UpdateJiraDB(data InjectData, mySQLInfo string, dbTableName string) {
-	fmt.Println("MySQL Server Information :", mySQLInfo)
-
 	sqlMethod, sqlExtralCMD := ConfirmMethod(dbTableName, data.Issuekey, data.Lastchange, mySQLInfo)
 
 	db, err := sql.Open("mysql", mySQLInfo)
@@ -111,7 +108,6 @@ func UpdateJiraDB(data InjectData, mySQLInfo string, dbTableName string) {
 			data.Affectversion,
 			data.Issuekey)
 		checkErr(err)
-
 	case "INSERT":
 		stmt, err := db.Prepare(sqlMethod + " " + dbTableName + " SET " +
 			"issuekey=?," +
@@ -154,7 +150,29 @@ func UpdateJiraDB(data InjectData, mySQLInfo string, dbTableName string) {
 		fmt.Println("Last Insert ID : ", id)
 
 	default:
-		fmt.Println("Method ===> ", method)
 	}
 	db.Close()
+}
+
+// ShowInejctData is the feature that will display inject data by fmt.println
+func ShowINjecData(data InjectData) {
+	fmt.Println("=============================================================")
+	fmt.Println("Issue Key : ", data.Issuekey)
+	fmt.Println("Issue Type : ", data.Issuetype)
+	fmt.Println("Issue ID : ", data.Issueid)
+	fmt.Println("Issue Self : ", data.Issueself)
+	fmt.Println("Project : ", data.Project)
+	fmt.Println("Summary : ", data.Summary)
+	fmt.Println("Priority : ", data.Priority)
+	fmt.Println("Resolution : ", data.Resolution)
+	fmt.Println("Status : ", data.Status)
+	fmt.Println("LastChange : ", data.Lastchange)
+	fmt.Println("Reporter : ", data.Reporter)
+	fmt.Println("Assignee : ", data.Assignee)
+	fmt.Println("Label : ", data.Label)
+	fmt.Println("Fix Version : ", data.Fixversion)
+	fmt.Println("Component : ", data.Component)
+	fmt.Println("Affect Version : ", data.Affectversion)
+	fmt.Println("Start Date : ", data.Startdate)
+	fmt.Println("DueDate : ", data.Duedate)
 }

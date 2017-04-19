@@ -11,6 +11,33 @@ import (
 	"github.com/luyaotsung/jiraGetIssues/lib/jirasql"
 )
 
+// Below is the table information for this applicaton
+// CREATE TABLE `Tickets` (
+//   `sn` int(10) NOT NULL AUTO_INCREMENT,
+//   `issuekey` char(20) COLLATE utf8_unicode_ci NOT NULL,
+//   `issuetype` char(200) COLLATE utf8_unicode_ci NOT NULL,
+//   `issueid` int(20) NOT NULL,
+//   `issueself` text COLLATE utf8_unicode_ci NOT NULL,
+//   `project` char(250) COLLATE utf8_unicode_ci NOT NULL,
+//   `summary` text COLLATE utf8_unicode_ci NOT NULL,
+//   `priority` char(200) COLLATE utf8_unicode_ci NOT NULL,
+//   `resolution` char(100) COLLATE utf8_unicode_ci NOT NULL,
+//   `status` char(100) COLLATE utf8_unicode_ci NOT NULL,
+//   `lastchange` datetime NOT NULL,
+//   `reporter` char(200) COLLATE utf8_unicode_ci NOT NULL,
+//   `assignee` char(200) COLLATE utf8_unicode_ci NOT NULL,
+//   `labels` text COLLATE utf8_unicode_ci NOT NULL,
+//   `fixversions` text COLLATE utf8_unicode_ci NOT NULL,
+//   `component` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+//   `affectversions` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+//   PRIMARY KEY (`issuekey`),
+//   UNIQUE KEY `sn` (`sn`),
+//   UNIQUE KEY `issuekey` (`issuekey`),
+//   KEY `lastchange` (`lastchange`),
+//   KEY `status` (`status`),
+//   KEY `resolution` (`resolution`)
+// ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ROW_FORMAT=COMPACT;
+
 func main() {
 	jiraweb := flag.String("jiraweb", "",
 		"Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira")
@@ -28,11 +55,9 @@ func main() {
 	if flag.NFlag() == 6 {
 
 		jiraObject := jira.GetReturnJSON(*jiraweb, *username, *password, *queryproject, 0, 1)
-
 		fmt.Println("Total : ", jiraObject.Total)
 		fmt.Println("MaxResult : ", jiraObject.MaxResults)
 
-		// Start to do our job to query all issues.
 		rangeCount := (jiraObject.Total / 1000) + 1
 		fmt.Println("Range Count => ", rangeCount)
 
@@ -44,7 +69,6 @@ func main() {
 			jiraObject = jira.GetReturnJSON(*jiraweb, *username, *password, *queryproject, startCount, totalCount)
 
 			for x := range jiraObject.Issues {
-
 				prepareData := jirasql.InjectData{
 					Issuekey:      jiraObject.Issues[x].Key,
 					Issuetype:     jiraObject.Issues[x].Fields.IssueType.Name,
@@ -65,48 +89,7 @@ func main() {
 					Startdate:     jiraObject.Issues[x].Fields.StartDate,
 					Duedate:       jiraObject.Issues[x].Fields.DueDate,
 				}
-
 				jirasql.UpdateJiraDB(prepareData, *sqlserverinfo, *sqltablename)
-
-				issuekey := jiraObject.Issues[x].Key
-				issuetype := jiraObject.Issues[x].Fields.IssueType.Name
-				issueid := jiraObject.Issues[x].ID
-				issueself := jiraObject.Issues[x].Self
-				project := jiraObject.Issues[x].Fields.Project.Name
-				summary := jiraObject.Issues[x].Fields.Summary
-				priority := jiraObject.Issues[x].Fields.Priority.Name
-				resolution := jiraObject.Issues[x].Fields.Resolution.Name
-				status := jiraObject.Issues[x].Fields.Status.Name
-				lastchange := jiraObject.Issues[x].Fields.Updated
-				reporter := jiraObject.Issues[x].Fields.Reporter.Name
-				assignee := jiraObject.Issues[x].Fields.Assignee.Name
-				label := jira.GetLabels(jiraObject.Issues[x].Fields.Labels)
-				fixversion := jira.GetFixVersions(jiraObject.Issues[x].Fields.FixVersion)
-				component := jira.GetComponents(jiraObject.Issues[x].Fields.Components)
-				affectversion := jira.GetVersions(jiraObject.Issues[x].Fields.Versions)
-				startdate := jiraObject.Issues[x].Fields.StartDate
-				duedate := jiraObject.Issues[x].Fields.DueDate
-
-				fmt.Println("=============================================================")
-				fmt.Println("Issue Key : ", issuekey)
-				fmt.Println("Issue Type : ", issuetype)
-				fmt.Println("Issue ID : ", issueid)
-				fmt.Println("Issue Self : ", issueself)
-				fmt.Println("Project : ", project)
-				fmt.Println("Summary : ", summary)
-				fmt.Println("Priority : ", priority)
-				fmt.Println("Resolution : ", resolution)
-				fmt.Println("Status : ", status)
-				fmt.Println("LastChange : ", lastchange)
-				fmt.Println("Reporter : ", reporter)
-				fmt.Println("Assignee : ", assignee)
-				fmt.Println("Label : ", label)
-				fmt.Println("Fix Version : ", fixversion)
-				fmt.Println("Component : ", component)
-				fmt.Println("Affect Version : ", affectversion)
-				fmt.Println("Start Date : ", startdate)
-				fmt.Println("DueDate : ", duedate)
-
 			}
 		}
 	} else {
