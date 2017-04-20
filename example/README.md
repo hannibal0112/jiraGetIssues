@@ -1,7 +1,7 @@
-## jiraGetIssues Example
-###### Get Jira Project Issue Detail Information & Store Data into SQL Server ( Event : Insert/Update/None )
+# jiraGetIssues Example
+## Get Jira Project Issue Detail Information & Store Data into SQL Server ( Event : Insert/Update/None )
 
-##### Usage of this script is below.
+## Usage of this script is below.
 * -jiraweb
   Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira
 * -password
@@ -16,7 +16,7 @@
   Input your sql talbe name
 
 
-##### Below is the table information for this applicaton
+## Below is the table information for this applicaton
 ```
  CREATE TABLE `Tickets` (
    `sn` int(10) NOT NULL AUTO_INCREMENT,
