@@ -11,6 +11,6 @@ Usage of this script is below.
 * -username
   User Name
 * -sqlserverinfo
-  Input your sql server information [UserName]:[Password]@tcp([SERVER IP:PORT])/[DatabaseName] , example:  eli:eli@tcp(127.0.0.1:3306)/JiraData ")
+  Input your sql server information [UserName]:[Password]@tcp([SERVER IP:PORT])/[DatabaseName] , example:  eli:eli@tcp(127.0.0.1:3306)/JiraData
 * -sqltablename
   Input your sql talbe name
