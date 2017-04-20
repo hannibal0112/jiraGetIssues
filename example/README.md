@@ -1,5 +1,5 @@
 # jiraGetIssues Example
-Get Jira Project Issue Detail Information
+Get Jira Project Issue Detail Information & Store Data into SQL Server ( Event : Insert/Update/None )
 
 Usage of this script is below.
 * -jiraweb
