@@ -16,7 +16,7 @@
 * -jiraweb
   Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira
 * -projectname
-  Project Name, example : -projectname=TYGH
+  Input your projects to query, example : +Project1+,+Project2,+Project3
 * -sqlserverinfo
   Input your sql server information [UserName]:[Password]@tcp([SERVER IP:PORT])/[DatabaseName] , example:  eli:eli@tcp(127.0.0.1:3306)/JiraData
 * -sqltablename
