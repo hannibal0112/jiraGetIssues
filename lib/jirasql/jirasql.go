@@ -154,8 +154,8 @@ func UpdateJiraDB(data InjectData, mySQLInfo string, dbTableName string) {
 	db.Close()
 }
 
-// ShowInejctData is the feature that will display inject data by fmt.println
-func ShowINjecData(data InjectData) {
+// ShowInjectData is the feature that will display inject data by fmt.println
+func ShowInjectData(data InjectData) {
 	fmt.Println("=============================================================")
 	fmt.Println("Issue Key : ", data.Issuekey)
 	fmt.Println("Issue Type : ", data.Issuetype)
