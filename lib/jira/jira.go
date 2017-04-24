@@ -230,7 +230,7 @@ func GetComponents(d []JiraFieldsResolution) string {
 }
 
 // GetReturnJSON is the function that can get http/https return json file
-func GetReturnJSON(webaddress string, username string, password string, queryproject string, startcount int, totalcount int) JiraObject {
+func GetReturnJSON(webaddress string, cookie string, queryproject string, startcount int, totalcount int) JiraObject {
 
 	client := &http.Client{}
 
@@ -238,8 +238,8 @@ func GetReturnJSON(webaddress string, username string, password string, querypro
 	getProjectIssueList := fmt.Sprintf("%s/rest/api/2/search?jql=project+in+(%s+)+order+by+id&startAt=%d&maxResults=%d",
 		webaddress, queryproject, startcount, totalcount)
 	req, err := http.NewRequest("GET", getProjectIssueList, nil)
-	req.SetBasicAuth(username, password)
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("cookie", cookie)
 	resp, err := client.Do(req)
 
 	if err != nil {

@@ -41,8 +41,10 @@ import (
 func main() {
 	jiraweb := flag.String("jiraweb", "",
 		"Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira")
-	username := flag.String("username", "", "User Name")
-	password := flag.String("password", "", "Password")
+	//username := flag.String("username", "", "User Name")
+	//password := flag.String("password", "", "Password")
+	bcookie := flag.String("cookie", "", "Browser Cookie")
+
 	queryproject := flag.String("projects", "",
 		"Input your projects to query, example : +Project1+,+Project2,+Project3")
 	sqlserverinfo := flag.String("sqlserverinfo", "",
@@ -52,9 +54,9 @@ func main() {
 
 	flag.Parse()
 
-	if flag.NFlag() == 6 {
+	if flag.NFlag() == 5 {
 
-		jiraObject := jira.GetReturnJSON(*jiraweb, *username, *password, *queryproject, 0, 1)
+		jiraObject := jira.GetReturnJSON(*jiraweb, *bcookie, *queryproject, 0, 1)
 		fmt.Println("Total : ", jiraObject.Total)
 		fmt.Println("MaxResult : ", jiraObject.MaxResults)
 
@@ -66,7 +68,7 @@ func main() {
 			totalCount := 1000
 			fmt.Println("Strat Count --> ", startCount)
 
-			jiraObject = jira.GetReturnJSON(*jiraweb, *username, *password, *queryproject, startCount, totalCount)
+			jiraObject = jira.GetReturnJSON(*jiraweb, *bcookie, *queryproject, startCount, totalCount)
 
 			for x := range jiraObject.Issues {
 				prepareData := jirasql.InjectData{
