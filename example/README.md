@@ -2,14 +2,21 @@
 ###### Get Jira Project Issue Detail Information & Store Data into SQL Server ( Event : Insert/Update/None )
 
 ## Usage of this script is below.
+1. Use getJiraCookie.go to get cookie
+2. Use getJiraIssues.go to get issues & save to DB
+
+#### getJiraCookie.og
+* -jiraweb string
+  Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira
+* -password string
+  Password
+* -username string
+  User Name
+#### getJiraIssues.go
 * -jiraweb
   Jira Web Site Address, example : -jiraweb=https://inhouse.htcstudio.com/jira
-* -password
-  Password
 * -projectname
   Project Name, example : -projectname=TYGH
-* -username
-  User Name
 * -sqlserverinfo
   Input your sql server information [UserName]:[Password]@tcp([SERVER IP:PORT])/[DatabaseName] , example:  eli:eli@tcp(127.0.0.1:3306)/JiraData
 * -sqltablename
