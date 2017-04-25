@@ -1,5 +1,5 @@
 # jiraGetIssues Example
-###### Get Jira Project Issue Detail Information & Store Data into SQL Server ( Event : Insert/Update/None )
+###### Get Jira Project Issue Detail Information & Store Data into SQL Server ( Event : Insert/Update )
 
 ## Usage of this script is below.
 1. Use getJiraCookie.go to get cookie

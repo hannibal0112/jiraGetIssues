@@ -3,7 +3,6 @@ package jirasql
 import (
 	"database/sql"
 	"fmt"
-	"time"
 )
 
 // InjectData is the struct for Inject DB Data
@@ -47,14 +46,6 @@ func ConfirmMethod(TableName string, IssueKey string, LastChange string, mySQLIn
 	db.Close()
 
 	if err == nil {
-		layout := " 2017-04-14 02:50:33"
-		originalTime, _ := time.Parse(layout, lastchange)
-		latestTime, _ := time.Parse(layout, LastChange)
-
-		if originalTime.Unix() == latestTime.Unix() {
-			fmt.Printf("MySQL Method is %s for %s \n", "NONE", IssueKey)
-			return "NONE", ""
-		}
 		fmt.Printf("MySQL Method is %s for %s \n", "UPDATE", IssueKey)
 		return "UPDATE", " WHERE issuekey=?"
 	}
